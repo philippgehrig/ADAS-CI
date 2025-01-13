@@ -1,0 +1,41 @@
+---
+- name: Configure proxy settings and NTP server
+  hosts: all
+  become: true
+
+  vars:
+    http_proxy: "http://192.168.1.1:44000"
+    https_proxy: "http://192.168.1.1:44000"
+    apt_proxy: "http://192.168.1.1:44000"
+    ntp_server: "53.60.5.254"
+
+  tasks:
+    - name: Set proxy for console
+      copy:pip 
+        dest: /etc/profile.d/proxy.sh
+        content: |
+          export http_proxy={{ http_proxy }}
+          export https_proxy={{ https_proxy }}
+      mode: "0644"
+
+    - name: Set proxy for APT
+      copy:
+        dest: /etc/apt/apt.conf.d/80proxy
+        content: |
+          Acquire::http::Proxy "{{ apt_proxy }}";
+          Acquire::https::Proxy "{{ apt_proxy }}";
+          Acquire::ftp::Proxy "{{ apt_proxy }}";
+      mode: "0644"
+
+    - name: Configure NTP server
+      lineinfile:
+        path: /etc/systemd/timesyncd.conf
+        regexp: '^NTP='
+        line: "NTP={{ ntp_server }}"
+        create: true
+
+    - name: Restart systemd-timesyncd service
+      systemd:
+        name: systemd-timesyncd
+        state: restarted
+        enabled: true
