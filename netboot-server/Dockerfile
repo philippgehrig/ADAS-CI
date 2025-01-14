@@ -12,21 +12,31 @@ RUN apt-get update && \
     tftpd-hpa \
     nfs-kernel-server \
     isc-dhcp-server \
-    xinetd && \
+    xinetd \
+    rsync && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /var/lib/tftpboot /exports /etc/dhcp
+# Create necessary directories and set permissions
+RUN mkdir -p /var/lib/tftpboot /exports/rootfs/jetson-orin /exports/rootfs/raspberry-pi /etc/dhcp && \
+    chown -R tftp:tftp /var/lib/tftpboot && \
+    chmod -R 755 /exports/rootfs && \
+    chown -R nobody:nogroup /exports/rootfs
 
 COPY tftp/tftpd-hpa /etc/default/tftpd-hpa
 COPY nfs/exports /etc/exports
 COPY dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY create-rootfs.sh /create-rootfs.sh
 
-RUN chmod +x /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh /create-rootfs.sh
 
-RUN ls -l /docker-entrypoint.sh
+# Verify the file is copied correctly
+RUN ls -l /docker-entrypoint.sh /create-rootfs.sh
 
 EXPOSE 69/udp 2049/tcp 67/udp
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+# Run the script to create the root filesystem
+RUN /create-rootfs.sh
+
+CMD [ "bin/bash" ]

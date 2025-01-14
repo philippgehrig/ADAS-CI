@@ -3,14 +3,27 @@ services:
   tftp-nfs-dhcp-server:
     build:
       context: .
-    container_name: tftp-nfs-dhcp-server
+    container_name: tftp-dhcp-server
     privileged: true
     ports:
       - "67:67/udp" # DHCP-Server-Port
       - "69:69/udp" # TFTP-Server-Port
-      - "2049:2049" # NFS-Server-Port
     volumes:
       - ./tftp/bootfiles:/var/lib/tftpboot
-      - ./nfs/rootfs:/exports/rootfs
       - ./dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
     network_mode: "host"
+
+  nfs:
+    image: gists/nfs-server
+    container_name: nfs-server
+    ports:
+      - "2049:2049"
+    # https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities
+    cap_add:
+      - SYS_ADMIN
+      - SETPCAP
+    environment:
+      - "NFS_DOMAIN=192.168.0.1" # The visitor IP range
+    volumes:
+      - /:/nfs-share
+    restart: always

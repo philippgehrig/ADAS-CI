@@ -1,0 +1,6 @@
+RASPI PI 4 (Privat):
+mac adress: b8:27:eb:37:3e:31
+serial number: 32373e31
+-------------------
+
+
