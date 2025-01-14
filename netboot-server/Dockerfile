@@ -24,7 +24,7 @@ RUN mkdir -p /var/lib/tftpboot /exports/rootfs/jetson-orin /exports/rootfs/raspb
     chown -R nobody:nogroup /exports/rootfs
 
 COPY tftp/tftpd-hpa /etc/default/tftpd-hpa
-COPY nfs/exports /etc/exports
+COPY exportfs/exports /
 COPY dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 COPY create-rootfs.sh /create-rootfs.sh

@@ -1,2 +1,0 @@
-/exports/rootfs/raspberry-pi *(rw,sync,no_subtree_check,no_root_squash)
-/exports/rootfs/jetson-orin *(rw,sync,no_subtree_check,no_root_squash)

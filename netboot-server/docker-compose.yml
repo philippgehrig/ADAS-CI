@@ -25,5 +25,6 @@ services:
     environment:
       - "NFS_DOMAIN=192.168.0.1" # The visitor IP range
     volumes:
-      - /:/nfs-share
+      - ./exportfs/32373e31:/nfs-share/32373e31
+      - ./exportfs/exports:/etc/exports
     restart: always
