@@ -6,9 +6,9 @@ services:
     container_name: tftp-nfs-dhcp-server
     privileged: true
     ports:
-      - "67:67/udp"                 # DHCP-Server-Port
-      - "69:69/udp"                 # TFTP-Server-Port
-      - "2049:2049"                 # NFS-Server-Port
+      - "67:67/udp" # DHCP-Server-Port
+      - "69:69/udp" # TFTP-Server-Port
+      - "2049:2049" # NFS-Server-Port
     volumes:
       - ./tftp/bootfiles:/var/lib/tftpboot
       - ./nfs/rootfs:/exports/rootfs
