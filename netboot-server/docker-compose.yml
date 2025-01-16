@@ -1,17 +1,17 @@
 version: "3.8"
 services:
-  tftp-nfs-dhcp-server:
-    build:
-      context: .
-    container_name: tftp-dhcp-server
-    privileged: true
-    ports:
-      - "67:67/udp" # DHCP-Server-Port
-      - "69:69/udp" # TFTP-Server-Port
-    volumes:
-      - ./tftp/bootfiles:/var/lib/tftpboot
-      - ./dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
-    network_mode: "host"
+  #tftp-nfs-dhcp-server:
+  #  build:
+  #    context: .
+  #  container_name: tftp-dhcp-server
+  #  privileged: true
+  #  ports:
+  #   - "67:67/udp" # DHCP-Server-Port
+  #   - "69:69/udp" # TFTP-Server-Port
+  # volumes:
+  #   - ./tftp/bootfiles:/var/lib/tftpboot
+  #   - ./dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
+  # network_mode: "host"
 
   nfs:
     image: gists/nfs-server
@@ -19,6 +19,7 @@ services:
     ports:
       - "2049:2049"
     # https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities
+    privileged: true
     cap_add:
       - SYS_ADMIN
       - SETPCAP
