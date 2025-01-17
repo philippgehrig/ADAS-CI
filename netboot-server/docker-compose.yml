@@ -13,26 +13,6 @@ services:
   #   - ./dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
   # network_mode: "host"
 
-  #nfs:
-  #  image: gists/nfs-server
-  #  container_name: nfs-server
-  #  ports:
-  #    - "2049:2049"
-  #  privileged: true
-  #  cap_add:
-  #    - SYS_ADMIN
-  #    - SETPCAP
-  #  environment:
-  #    - "NFS_DOMAIN=192.168.0.0/24" # The visitor IP range
-  #  volumes:
-  #    - type: bind
-  #      source: ./exportfs/32373e31
-  #      target: /nfs-share/32373e31
-  #    - type: bind
-  #      source: ./exportfs/exports
-  #      target: /etc/exports
-  #  restart: always
-
   nfs-server:
     image: itsthenetwork/nfs-server-alpine:latest
     container_name: nfs-server

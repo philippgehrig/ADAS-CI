@@ -3,4 +3,6 @@ mac adress: b8:27:eb:37:3e:31
 serial number: 32373e31
 -------------------
 
+how to start nfs client on raspberry pi:
 
+sudo mount -t nfs -o nolock <ip-adress>:/ /mnt/<mnt_directory>
