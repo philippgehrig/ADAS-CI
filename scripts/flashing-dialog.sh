@@ -118,6 +118,15 @@ case $PCIe_CHOICE in
         ;;
 esac
 
+#flashing the configuration
+sudo ./flash.sh $CONFIG mmcblk0p1
+
+# Check if the flashing was successful
+if [ $? -ne 0 ]; then
+  echo "Flashing failed. Exiting script."
+  exit 1
+fi
+
 # Display a success message
 dialog --msgbox "Configuration updated for $CONFIG in PCIe $PCIe_MODE mode!" 6 50
 
